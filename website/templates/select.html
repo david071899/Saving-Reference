@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Select</title>
+	<style type="text/css">
+		div.pic{
+			width: 150px;
+			float: left;
+			position: relative;
+			margin-right: 5px;
+			margin-left: 5px;
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+		div.container{
+			position: absolute;
+			top:50px;
+			left: 10px;		
+			right: 10px;
+		}
+	</style>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+	<!--tagbox  jquary-->
+	<link rel="stylesheet" href="http://opensource.faroemedia.com/tagator/fm.tagator.jquery.css"/>
+	<script src="http://opensource.faroemedia.com/tagator/jquery-1.11.0.min.js"></script>
+	<script src="http://opensource.faroemedia.com/tagator/fm.tagator.jquery.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">			
+			<div class="col-md-6">
+				{%for i in url_select%}
+					<div class="pic" >
+						<img src="{{i}}" width=150 height=150>
+					</div>
+				{%endfor%}
+			</div>
+			<div class="col-md-6">
+				<form  action="Add_Success/" method="post">{%csrf_token%}
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input type="text" class="form-control" id="name" placeholder="Name" name="name">
+					</div>
+					<div class="form-group">
+						<label for="activate_tagator2">Style</label></br>
+						<input id="activate_tagator2" type="text" class="tagator" name="style" data-tagator-show-all-options-on-focus="true" style="width:560px">
+						<!-- <input type="text" class="form-control" id="style" placeholder="Style" name="style"> -->
+					</div>
+					<div class="form-group">
+						<label for="description" >Description</label>
+						<textarea id="description" rows="3" cols="67" name="description"></textarea>
+						<!-- <p class="help-block">Example block-level help text here.</p> -->
+					</div>
+					<div class="form-group">
+						<label for="pic_url">Pic_url</label>
+						<input type="text" class="form-control" id="pic_url" placeholder="Style" name="pic_url" value="[{%for i in url_select%}'{{i}}',{%endfor%}]"  >
+					</div>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

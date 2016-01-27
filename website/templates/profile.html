@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profile</title>
+	<style type="text/css">
+	div.allcontainer{
+		position: absolute;
+		top: 10%;
+		left: 10%;
+		right: 10%;
+		width: 80%;
+
+	}
+	.tabcss{
+		position: relative;
+		top:20px;
+	}
+	.tab_content_css{
+		position: relative;
+		top: 10px;
+
+	}
+	</style>
+	{% load static%}
+	<!--jquary-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+	<!--bootstrap-->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" >
+		<div class="container-fluid">
+			<p class="navbar-text navbar-right" style="margin-right:10px;" >Welcome ,{{user}}</p>
+			<div class="navbar-header">
+				<a class="navbar-brand"  href="/collection_display/">
+				<img  src="{% static  'img/logo/logo.png' %}" height="25" width="120">
+				</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right ">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" ariaexpanded="false"><span class=" glyphicon glyphicon-user "  aria-hidden="true"></span> </a>
+					<ul class="dropdown-menu">
+						<li><a href="/crawler/">Add New</a></li>
+						<li><a href="/profile/">Profile</a></li>
+						<li><a href="/logout/">Logout</a></li>
+					</ul>
+				</li>
+			</ul>
+			<form class="navbar-form navbar-right" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search Whatever U Like">
+				</div>
+				<button type="submit" class="btn btn-default">Search</button>
+			</form>
+		</div>
+	</nav>
+	<div class="allcontainer">
+		<h2>The Profile of {{user}}</h2>
+		<div class="tabcss">
+			<ul class="nav nav-pills nav-justified" role="tablist">
+				<li role="presentation" class="active"><a href="#Added" aria-controls="home" role="tab" data-toggle="tab">Added</a></li>
+				<li role="presentation"><a href="#collection" aria-controls="collection" role="tab" data-toggle="tab">Collection</a></li>
+			</ul>
+			<div class="tab-content tab_content_css" >
+				<div role="tabpanel" class="tab-pane active" id="Added">
+					{% for i in art_user_add%}
+						<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}">
+						{%if i.tag_set.all%}
+							{%for r in i.tag_set.all%}
+									<div class="thumbnail" >
+										<img src="{{r.pic_url.0}}" >
+										<div class="caption">
+											<h3>{{r.art}} </h3>
+											<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>
+											<p>{{r.description}}</p>
+										</div>
+									</div>							
+							{%endfor%}
+						{%endif%}
+						</div>
+					{%endfor%}
+				</div>
+				<div role="tabpanel" class="tab-pane" id="collection">
+					{% for i in art_user_collection%}
+						<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}">
+						{%if i.tag_set.all%}
+							{%for r in i.tag_set.all%}
+									<div class="thumbnail" >
+										<img src="{{r.pic_url.0}}" >
+										<div class="caption">
+											<h3>{{r.art}} </h3>
+											<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>
+											<p>{{r.description}}</p>
+										</div>
+									</div>							
+							{%endfor%}
+						{%endif%}
+						</div>
+					{%endfor%}
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Collection Display</title>
+	<style type="text/css">
+		div.picbody{
+			position: absolute;
+			top:10%;
+			left: 7%;
+			right: 7%;
+			bottom: auto;
+		}
+		div.piccontainer{
+			position: relative;
+		}
+		div.pic{
+			float: left;
+			position: relative;
+			margin-right: 10px;
+			margin-left: 10px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		.tagbar_container{
+			background-color: white;
+			border-style: solid;
+			border-color: #428bca;
+			position: fixed;
+			top:10%;
+			left: -200px;
+			width: 200px;
+			height: 400px;
+			transition: 0.8s;
+		}
+		.pos{
+			position: relative;
+			left: 20px;
+			width: 200px;
+
+		}
+		.tag_bar_icon{
+			background-color: rgba(0,0,0,0);
+			position: absolute;
+			right: 0px;
+			top: 0px;
+			left: 100%;
+			width: 30px;
+			height: 70px;
+		}
+		.tagbar_container:hover{
+			left: -5px;
+		}
+	</style>
+
+	<!--checkbox   css -->
+	{% load static%}
+	<link rel="stylesheet" type="text/css" href="{% static  'css/checkbox.css' %}" />
+	<!--jquary-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+	<!--bootstrap-->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+<body >
+	<nav class="navbar navbar-default navbar-fixed-top" >
+		<div class="container-fluid">
+			<p class="navbar-text navbar-right" style="margin-right:10px;" >Welcome ,{{user}}</p>
+			<div class="navbar-header">
+				<a class="navbar-brand"  href="/collection_display/">
+				<img  src="{% static  'img/logo/logo.png' %}" height="25" width="120">
+				</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right ">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" ariaexpanded="false"><span class=" glyphicon glyphicon-user "  aria-hidden="true"></span> </a>
+					<ul class="dropdown-menu">
+						<li><a href="/crawler/">Add New</a></li>
+						<li><a href="/profile/">Profile</a></li>
+						<li><a href="/logout/">Logout</a></li>
+					</ul>
+				</li>
+			</ul>
+			<form class="navbar-form navbar-right" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search Whatever U Like">
+				</div>
+				<button type="submit" class="btn btn-default">Search</button>
+			</form>
+		</div>
+	</nav>
+	<!--art display-->
+	<div class="picbody">
+		<div class="container">
+			<div class="piccontainer">
+				{% for i in art_all%}
+					<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}">
+					{%if i.tag_set.all%}
+						{%for r in i.tag_set.all%}
+								<div class="thumbnail" >
+									<img src="{{r.pic_url.0}}" >
+									<div class="caption">
+										<h3>{{r.art}} </h3>
+											<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>
+											<p>
+												<form  action="" method="post">{%csrf_token%}
+													<input type="hidden" name="getcollection" value="{{r.art}}">
+													<input class="btn btn-default " type="submit" value="收藏！">
+												</form>
+											</p>
+											
+									</div>
+								</div>							
+						{%endfor%}
+					{%endif%}
+					</div>
+				{%endfor%}
+			</div>
+		</div>
+	</div>
+	<div>
+		{% for i in art_all%}
+			<!-- Modal -->
+			<div class="modal fade" id="Modal{{forloop.counter}}" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h3 class="modal-title" id="gridSystemModalLabel">{{i}}</h3>
+						</div>
+						<div class="modal-body">
+							<div class="row">	
+								<div class="col-md-5">
+								{%if i.tag_set.all%}
+									{%for r in i.tag_set.all%}
+										{%for pic in r.pic_url%}
+										<div class="thumbnail">
+											<img src="{{pic}}">
+										</div>
+										{%endfor%}
+									{%endfor%}
+								{%endif%}
+								</div>
+								<div class="col-md-7">
+								{%if i.tag_set.all%}
+									{%for r in i.tag_set.all%}
+									<ul>
+										<li><h4>Adder: {{i.adder}}</h4></li>
+										<li><h4>Name: {{r.art}}</h4></li>
+										<li><h4>Style:  {%for style in r.style%}{{style}} {%endfor%}</h4></li>
+										<li><h4>Description: {{r.description}}</h4></li>
+									</ul>
+									{%endfor%}
+								{%endif%}								
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{%endfor%}
+	</div>
+	<!--filtering&sorting-->
+	<div   id="filters" class="tagbar_container">
+			<div class="pos">
+				<h2>標籤排名！</h2>
+				{%for i in top5 %}
+				<input class="css-checkbox" type="checkbox" value=".{{i.0}}" id="{{i.0}}">
+				<label class="css-label" for="{{i.0}}">{{forloop.counter}}.{{i.0}}</label></br>
+				{%endfor%}
+			</div>
+			<div class="tag_bar_icon">
+				<span class=" glyphicon glyphicon-chevron-right "  style="left:5px;color:#428bca;" aria-hidden="true"></span>
+				<span class=" glyphicon glyphicon-chevron-right " style="left:5px;color:#428bca;" aria-hidden="true"></span>
+				<span class=" glyphicon glyphicon-chevron-right "   style="left:5px;color:#428bca;"aria-hidden="true"></span>
+			</div>
+	</div> 
+	
+	<!--waterfall-->
+ 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="../js/zepto.js"><\/script>')</script> 
+
+	<script src="http://dfcreative.github.io/projects/waterfall/jquery.waterfall.js"></script>
+
+	<script>
+	$(function(){
+		var idx = 20;
+
+		var wf = $(".piccontainer").waterfall();
+		})
+	</script>
+
+	<!--isotope-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.js"></script>
+	<script type="text/javascript">
+		$( function() {
+			var $piccontainer = $('.piccontainer').isotope({
+				
+			});
+			// filter items by checkbox
+			var $checkboxes = $('#filters input');
+
+			$checkboxes.change(function(){
+				var filters = [];
+				// get checked checkboxes values
+				$checkboxes.filter(':checked').each(function(){
+					filters.push( this.value );
+				});
+				// ['.red', '.blue'] -> '.red, .blue'
+				filters = filters.join('');
+				$piccontainer.isotope({ filter: filters });
+			});
+
+		});
+	</script>
+</body>
+</html>

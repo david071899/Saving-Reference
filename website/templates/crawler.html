@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Recrawler</title>
+	<style type="text/css">
+		div.container{
+			padding: 0px 0px 0px 100px;
+		}
+		div.texturl{
+			position: relative;
+			top: 50px;
+			left:40%;
+
+		}
+		div.button{
+			position: relative;
+			top: 70px;
+			left:40%;
+		}
+		div.pic{
+			width: 180px;
+			float: left;
+			position: relative;
+			top: 70px;
+			padding: 50px 50px 0px 50px;
+		}
+		input.chk{
+			margin-left: 100px;
+		}
+		div.btn{
+			position: absolute;
+			top: 70px;
+			left:30%;			
+		}
+		div.picselect{
+			position: absolute;
+			top: 20px;
+		}
+	</style>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$(".collect").click(function(){
+			document.getElementById("select").style.display = "none";
+			//console.log($(":checked"));
+			/*$(":checked").each(function() {
+				var id = $(this).attr("value");
+				console.log(id);
+				select.push(id);
+				
+			});
+			console.log(select);**/
+
+		});	
+	});
+	</script>
+</head>
+<body>
+	<form action=""  method="post">{%csrf_token%}
+		<div class="texturl">
+			<div   ><input  id="url" type="text" name="url"   style="width:300px"></div>
+		</div>
+		<div class="button">
+			<div  style="position:relative;left:110px"><input type="submit" value="Send url"  ></div>
+		</div>
+	</form>
+	<div class="container">
+	<form  action="select/"  method="post">{%csrf_token%}
+		{%for url in all_src%}
+			
+			<div class="pic">
+				<label for="img{{forloop.counter}}"><img src="{{url}}" width=200 height=200></label>
+				<input type="checkbox"  name="select"  class="chk" id="img{{forloop.counter}}" value="{{url}}" />
+			</div>
+		{%endfor%}
+		<div class="btn"><input  id="select" type="submit" value="Select" class="collect" ></div>
+	</form>
+	<div class="contsiner">
+	{%for i in url_select%}
+		<div class="pic">
+			<img src="{{i}}" width=200 height=200>
+		</div>
+	{%endfor%}
+	</div>
+
+</body>
+</html>
