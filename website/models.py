@@ -12,7 +12,6 @@ class Art(models.Model):
 	collecter=models.ManyToManyField(Collection)
 	def  __unicode__(self):
 		return self.name
-
 class ListField(models.TextField):
 	__metaclass__ = models.SubfieldBase
 	description = "Stores a python list"
