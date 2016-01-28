@@ -97,31 +97,29 @@
 	</nav>
 	<!--art display-->
 	<div class="picbody">
-		<div class="container">
-			<div class="piccontainer">
-				{% for i in art_all%}
-					<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}">
-					{%if i.tag_set.all%}
-						{%for r in i.tag_set.all%}
-								<div class="thumbnail" >
-									<img src="{{r.pic_url.0}}" >
-									<div class="caption">
-										<h3>{{r.art}} </h3>
-											<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>
-											<p>
-												<form  action="" method="post">{%csrf_token%}
-													<input type="hidden" name="getcollection" value="{{r.art}}">
-													<input class="btn btn-default " type="submit" value="收藏！">
-												</form>
-											</p>
-											
-									</div>
-								</div>							
-						{%endfor%}
-					{%endif%}
-					</div>
-				{%endfor%}
-			</div>
+		<div class="piccontainer">
+			{% for i in art_all%}
+				<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}">
+				{%if i.tag_set.all%}
+					{%for r in i.tag_set.all%}
+							<div class="thumbnail" >
+								<img src="{{r.pic_url.0}}" >
+								<div class="caption">
+									<h3>{{r.art}} </h3>
+										<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>
+										<p>
+											<form  action="" method="post">{%csrf_token%}
+												<input type="hidden" name="getcollection" value="{{r.art}}">
+												<input class="btn btn-default " type="submit" value="收藏！">
+											</form>
+										</p>
+										
+								</div>
+							</div>							
+					{%endfor%}
+				{%endif%}
+				</div>
+			{%endfor%}
 		</div>
 	</div>
 	<div>
