@@ -1,5 +1,6 @@
 from django.shortcuts import  render_to_response
 from bs4 import BeautifulSoup
+from urlparse import urlparse
 from django.template import RequestContext
 import requests
 import json
@@ -11,31 +12,54 @@ from django.http import HttpResponseRedirect
 
 def crawler(request):
 	
-	if request.POST:
-		try:
-			url=request.POST['url']
-		except:
-			pass
+	if request.POST:				
+		url=request.POST['url']
+		key =urlparse(url)
+		all_links=[]
+		all_src=[]
+
+		if key.netloc=="www.behance.net":
+			header_info = {
+				'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36',
+				'Host':'www.behance.net',
+				'Connection':'keep-alive',
+				'cookie':'ilo0=true',
+				}
+			res=requests.get(url,headers=header_info)
+			soup = BeautifulSoup(res.text.encode("utf-8"),"html.parser")
+			title = soup.find('div', {'id':'project-name'}).text
+			for pic in soup.find_all("img"):
+				try:
+					#print pic['src']
+					all_links.append(pic['src'])
+				except:
+					pass
+				try:
+					#print pic['data-src']
+					all_links.append(pic['data-src'])
+				except:
+					pass
+			for item in all_links:
+				for  part in item.split("/"):
+					if part=='project_modules':
+						all_src.append(item)
+
 		else:
-			if url:
-				all_links=[]
-				all_src=[]
-				res = requests.get(url)
-				soup = BeautifulSoup(res.text.encode("utf-8"))
+			res = requests.get(url)
+			soup = BeautifulSoup(res.text.encode("utf-8"))
+			title = ''
+			for item in  soup.find_all("img"):
+				all_links.append(item['src'])
 
-				for item in  soup.find_all("img"):
-					all_links.append(item['src'])
-
-				for i in all_links:
-					if i[0]=="h":
-						all_src.append(i)
+			for i in all_links:
+				if i[0]=="h":
+					all_src.append(i)
 
 	return render_to_response('crawler.html',RequestContext(request,locals()))
 
 def select(request):
 
 	if request.POST:
-
 		url_select=request.POST.getlist('select')
 
 	return render_to_response('select.html',RequestContext(request,locals()))
@@ -48,35 +72,25 @@ def  ending(request):
 		style=request.POST['style'].split(",")
 		description=request.POST['description']
 		pic_url=request.POST['pic_url']
-		Art.objects.create(
-			name=name,
-			adder=request.user,
-			)
-		Tag.objects.create(
-			style=style,
-			description=description,
-			pic_url=pic_url,
-			art=Art.objects.get(name=name),
-			)
-		a=Art.objects.all()
-
-	total=[]
-	account_list=[]
-	
-	a=Art.objects.all()
-
-	for i in a:
-		for  style in i.tag_set.all()[0].style:
-			total.append(style)
-
-	account=sorted(Counter(total).iteritems() , key=lambda x : x[1] , reverse=True)
-
-	for key in account:
-		temp=[key[0],key[1]]
-		account_list.append(temp)
-	top5=account_list[0:5]
-	
+		
+		if Art.objects.get(name=name):
+			warning=" Name Conflict , Please change the name "
+			return render_to_response('Wrong_naming.html',RequestContext(request,locals()))
+		else:
+			Art.objects.create(
+				name=name,
+				adder=request.user,
+				)
+			Tag.objects.create(
+				style=style,
+				description=description,
+				pic_url=pic_url,
+				art=Art.objects.get(name=name),
+				)
+			return render_to_response('Add_Success.html',RequestContext(request,locals()))
+		
 	return render_to_response('Add_Success.html',RequestContext(request,locals()))
+	
 
 def display(request):
 	if request.user.is_authenticated():

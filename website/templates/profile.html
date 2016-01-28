@@ -3,7 +3,7 @@
 <head>
 	<title>Profile</title>
 	<style type="text/css">
-	div.allcontainer{
+	.allcontainer{
 		position: absolute;
 		top: 10%;
 		left: 10%;
@@ -19,6 +19,9 @@
 		position: relative;
 		top: 10px;
 
+	}
+	.pic_display{
+		position: relative;
 	}
 	</style>
 	{% load static%}
@@ -69,23 +72,25 @@
 				<li role="presentation"><a href="#collection" aria-controls="collection" role="tab" data-toggle="tab">Collection</a></li>
 			</ul>
 			<div class="tab-content tab_content_css" >
-				<div role="tabpanel" class="tab-pane active" id="Added">
-					{% for i in art_user_add%}
-						<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}">
-						{%if i.tag_set.all%}
-							{%for r in i.tag_set.all%}
-									<div class="thumbnail" >
-										<img src="{{r.pic_url.0}}" >
-										<div class="caption">
-											<h3>{{r.art}} </h3>
-											<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>
-											<p>{{r.description}}</p>
-										</div>
-									</div>							
-							{%endfor%}
-						{%endif%}
-						</div>
-					{%endfor%}
+				<div role="tabpanel" class="tab-pane active " id="Added">
+					<div class="pic_display">
+						{% for i in art_user_add%}
+							<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}">
+							{%if i.tag_set.all%}
+								{%for r in i.tag_set.all%}
+										<div class="thumbnail" >
+											<img src="{{r.pic_url.0}}" >
+											<div class="caption">
+												<h3>{{r.art}} </h3>
+												<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>
+												<p>{{r.description}}</p>
+											</div>
+										</div>							
+								{%endfor%}
+							{%endif%}
+							</div>
+						{%endfor%}
+					</div>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="collection">
 					{% for i in art_user_collection%}
@@ -107,8 +112,19 @@
 				</div>
 			</div>
 		</div>
-
-
 	</div>
+	<!--waterfall-->
+ 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="../js/zepto.js"><\/script>')</script> 
+
+	<script src="http://dfcreative.github.io/projects/waterfall/jquery.waterfall.js"></script>
+
+	<script>
+	$(function(){
+		var idx = 20;
+
+		var wf = $(".pic_display").waterfall();
+		})
+	</script>
 </body>
 </html>

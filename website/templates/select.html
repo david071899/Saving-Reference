@@ -46,7 +46,7 @@
 			<div class="col-md-6">
 				<form  action="Add_Success/" method="post">{%csrf_token%}
 					<div class="form-group">
-						<label for="name">Name</label>
+						<label for="name">Name <span style="color:red" >{{warning}}</span></label>
 						<input type="text" class="form-control" id="name" placeholder="Name" name="name">
 					</div>
 					<div class="form-group">
