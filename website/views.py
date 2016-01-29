@@ -75,10 +75,11 @@ def  ending(request):
 			description=request.POST['description']
 			pic_url=request.POST['pic_url']
 			
-			if Art.objects.get(name=name):
-				warning=" Name Conflict , Please change the name "
+			try :
+				Art.objects.get(name=name)
+				warning=" Name Conflict , Please chick here to return the page  "
 				return render_to_response('Wrong_naming.html',RequestContext(request,locals()))
-			else:
+			except:
 				Art.objects.create(
 					name=name,
 					adder=request.user,
@@ -91,7 +92,6 @@ def  ending(request):
 					)
 				return render_to_response('Add_Success.html',RequestContext(request,locals()))
 			
-		return render_to_response('Add_Success.html',RequestContext(request,locals()))
 	else:
 		return HttpResponseRedirect("/login/")	
 
@@ -113,9 +113,6 @@ def display(request):
 			temp=[key[0],key[1]]
 			account_list.append(temp)
 		top5=account_list[0:5]
-
-		#return render_to_response('collection_display.html',RequestContext(request,locals()))
-
 		
 		if request.POST:
 			name_collection=request.POST['getcollection']
