@@ -110,7 +110,7 @@
 				{%if i.tag_set.all%}
 					{%for r in i.tag_set.all%}
 							<div class="thumbnail " >
-								<a href="#" ><img  class="background"  src="{{r.pic_url.0}}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}"></a>
+								<a href="#" ><img  class="background"  src="{{r.pic_url.0}}"  data-toggle="modal" data-target="#Modal{{i.id}}"></a>
 								<div class="caption">
 									<h3>{{r.art}} </h3>
 										<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>
@@ -132,7 +132,7 @@
 
 	{% for i in art_all%}
 		<!-- Modal -->
-		<div class="modal fade" id="Modal{{forloop.counter}}" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+		<div class="modal fade" id="Modal{{i.id}}" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
