@@ -50,7 +50,13 @@
 		.tagbar_container:hover{
 			left: -5px;
 		}
-
+		.background {
+			opacity: 1;
+			transition: 0.5s; 
+		}
+		.background:hover { 
+			opacity: 0.4; 
+		}
 	</style>
 
 	<!--checkbox   css -->
@@ -100,11 +106,11 @@
 	<div class="picbody">
 		<div class="piccontainer">
 			{% for i in art_all%}
-				<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}">
+				<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  >
 				{%if i.tag_set.all%}
 					{%for r in i.tag_set.all%}
-							<div class="thumbnail" >
-								<img src="{{r.pic_url.0}}" >
+							<div class="thumbnail " >
+								<a href="#" ><img  class="background"  src="{{r.pic_url.0}}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}"></a>
 								<div class="caption">
 									<h3>{{r.art}} </h3>
 										<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>

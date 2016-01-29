@@ -37,7 +37,7 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
-<body  >
+<body style="overflow:scroll;overflow-x:hidden;" >
 	<nav class="navbar navbar-default navbar-fixed-top" >
 		<div class="container-fluid">
 			<p class="navbar-text navbar-right" style="margin-right:10px;" >Welcome ,{{user}}</p>
@@ -92,7 +92,7 @@
 						{%endfor%}
 					</div>
 				</div>
-				<div role="tabpanel" class="tab-pane" id="collection">
+				<div role="tabpanel" class="tab-pane "  id="collection">
 					{% for i in art_user_collection%}
 						<div class="col-sm-5 col-md-3  {%if i.tag_set.all%}{%for r in i.tag_set.all%}{%for style in r.style%}{{style}} {%endfor%}{%endfor%}{%endif%}"  data-toggle="modal" data-target="#Modal{{forloop.counter}}">
 						{%if i.tag_set.all%}
