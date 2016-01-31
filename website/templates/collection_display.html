@@ -39,6 +39,7 @@
 
 		}
 		.tag_bar_icon{
+
 			background-color: rgba(0,0,0,0);
 			position: absolute;
 			right: 0px;
@@ -81,7 +82,7 @@
 			<p class="navbar-text navbar-right" style="margin-right:10px;" >Welcome ,{{user}}</p>
 			<div class="navbar-header">
 				<a class="navbar-brand"  href="/collection_display/">
-				<img  src="https://lh4.googleusercontent.com/rufg53bB5Go4zzM4rSsSeo4CHZ1GibYnGXPFssHHFK56p0X9Ki-XoaJYESAqfZF_tVAwww=s190" height="25" width="120">
+				<img  src="http://i.imgur.com/lVPHoEH.png?1" height="25" width="120">
 				</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right ">
@@ -110,7 +111,7 @@
 				{%if i.tag_set.all%}
 					{%for r in i.tag_set.all%}
 							<div class="thumbnail " >
-								<a href="#" ><img  class="background"  src="{{r.pic_url.0}}"  data-toggle="modal" data-target="#Modal{{i.id}}"></a>
+								<img  class="background"  src="{{r.pic_url.0}}"  data-toggle="modal" data-target="#Modal{{i.id}}">
 								<div class="caption">
 									<h3>{{r.art}} </h3>
 										<p>{%for style in r.style%}<div class="label label-primary">{{style}}</div> {%endfor%}</p>
@@ -129,11 +130,10 @@
 			{%endfor%}
 		</div>
 	</div>
-
 	{% for i in art_all%}
 		<!-- Modal -->
-		<div class="modal fade" id="Modal{{i.id}}" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
+		<div class="modal fade " id="Modal{{i.id}}"  tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+			<div class="modal-dialog" >
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
