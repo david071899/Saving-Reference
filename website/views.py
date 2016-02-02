@@ -154,7 +154,7 @@ def  profile(request):
 				Art.objects.get(name=del_add).delete()
 			except:
 				del_collection=request.POST["del_collection"]
-				request.user.collection.art_set.get(name=del_collection).delete()
+				request.user.collection.art_set.remove(request.user.collection.art_set.get(name=del_collection))
 
 		return render_to_response('profile.html',RequestContext(request,locals()))
 	else:
