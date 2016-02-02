@@ -13,14 +13,6 @@
 		div.piccontainer{
 			position: relative;
 		}
-		div.pic{
-			float: left;
-			position: relative;
-			margin-right: 10px;
-			margin-left: 10px;
-			margin-top: 10px;
-			margin-bottom: 10px;
-		}
 		.tagbar_container{
 			background-color: white;
 			border-style: solid;
@@ -95,7 +87,7 @@
 					</ul>
 				</li>
 			</ul>
-			<form action="/search/" class="navbar-form navbar-right" method="post">{%csrf_token%}
+			<form action="/search/" class="navbar-form navbar-right" method="get">{%csrf_token%}
 				<div class="form-group">
 					<input type="text" class="form-control" name="search" placeholder="Search Whatever U Like">
 				</div>

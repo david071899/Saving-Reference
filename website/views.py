@@ -142,20 +142,28 @@ def display(request):
 
 
 def  profile(request):
-	if   request.user.is_authenticated():
+	if  request.user.is_authenticated():
 		Collection.objects.get_or_create(collecter=request.user,defaults={'collecter':request.user})
 		user=request.user
 		user_collection=user
 		art_user_add=request.user.art_set.all()
 		art_user_collection=request.user.collection.art_set.all()
+		if request.POST:
+			try:
+				del_add=request.POST["del_add"]
+				Art.objects.get(name=del_add).delete()
+			except:
+				del_collection=request.POST["del_collection"]
+				request.user.collection.art_set.get(name=del_collection).delete()
+
 		return render_to_response('profile.html',RequestContext(request,locals()))
 	else:
 		return HttpResponseRedirect("/login/")
 
 def search(request):
 	if   request.user.is_authenticated():
-		if request.POST:
-			input_word=request.POST["search"]
+		if request.GET:
+			input_word=request.GET["search"]
 			seg_list= jieba.lcut(input_word, cut_all=True)
 			result=[]
 			for art in Art.objects.all():
@@ -167,7 +175,13 @@ def search(request):
 						result.append(art)
 					elif any(key==word for word in jieba.lcut(art.tag_set.all()[0].description ,cut_all=True)):
 						result.append(art)
-			return render_to_response('search.html',RequestContext(request,locals()))
+			
+		if request.POST:
+			name_collection=request.POST['getcollection']
+			Collection.objects.get_or_create(collecter=request.user,defaults={'collecter':request.user})
+			Art.objects.update_or_create(name=name_collection,defaults={'collecter':Collection.objects.filter(collecter=request.user)})
+
+		return render_to_response('search.html',RequestContext(request,locals()))
 
 
 	else:
