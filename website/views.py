@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import  render_to_response
 from bs4 import BeautifulSoup
 from urlparse import urlparse
@@ -8,6 +9,7 @@ from website.models import Tag,Art,Collection
 from collections import Counter
 from django.contrib import auth
 from django.http import HttpResponseRedirect
+import jieba
 # Create your views here.
 
 def crawler(request):
@@ -149,6 +151,28 @@ def  profile(request):
 		return render_to_response('profile.html',RequestContext(request,locals()))
 	else:
 		return HttpResponseRedirect("/login/")
+
+def search(request):
+	if   request.user.is_authenticated():
+		if request.POST:
+			input_word=request.POST["search"]
+			seg_list= jieba.lcut(input_word, cut_all=True)
+			result=[]
+			for art in Art.objects.all():
+				art_name_seg=jieba.lcut(art.name ,cut_all=True)
+				for key in seg_list:
+					if any(key==name for name in art_name_seg):
+						result.append(art)
+					elif any(key==style for style in art.tag_set.all()[0].style):
+						result.append(art)
+					elif any(key==word for word in jieba.lcut(art.tag_set.all()[0].description ,cut_all=True)):
+						result.append(art)
+			return render_to_response('search.html',RequestContext(request,locals()))
+
+
+	else:
+		return HttpResponseRedirect("/login/")
+
 
 
 

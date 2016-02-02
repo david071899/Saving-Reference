@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{input_word}} - Search Results</title>
+</head>
+<body>
+	{%for i in result%}
+		{{i}}
+		{%if i.tag_set.all%}
+			{%for r in  i.tag_set.all %}
+				{{r.style}}
+				{{r.pic_url}}
+			{%endfor%}
+		{%endif%}
+	{%endfor%} 
+	</br>
+</body>
+</html>
